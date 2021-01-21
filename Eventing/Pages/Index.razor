@@ -1,0 +1,43 @@
+﻿@page "/"
+@using Eventing.Components
+@using Eventing.Code
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="AddNewPersonWithEventHandler" class="btn btn-primary">Create new person with an event handler</button>
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<TableRenderer T="Person" Items="TableRendererState.GetPeople().ToList()" Context="Person" OnCreateNewEventCallback='(() => TableRendererState.AddPerson(new Person { FirstName = "new", LastName = "person"}))'>
+    <HeadTemplate>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Display Name
+            </th>
+        </tr>
+    </HeadTemplate>
+
+    <BodyRowTemplate>
+        <tr>
+            <td>@Person.Id</td>
+            <td>@($"{Person.FirstName} {Person.LastName}")</td>
+        </tr>
+    </BodyRowTemplate>
+</TableRenderer>
+
+@code {
+    [Inject]
+    private ITableRendererState TableRendererState { get; set; }
+
+    private void AddNewPersonWithEventHandler()
+    {
+        TableRendererState.AddPerson(new Person { FirstName = "new", LastName = "person" });
+
+        TableRendererState.OnNewItemEventInvoke(this, new EventArgs());
+    }
+}

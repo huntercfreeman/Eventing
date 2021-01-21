@@ -1,0 +1,14 @@
+﻿@typeparam T
+
+<button @onclick="FireOnCreateNewEventCallback">Create new person with an EventCallback</button>
+<table>
+    <thead>
+        @HeadTemplate
+    </thead>
+    <tbody>
+        @foreach (var item in Items)
+        {
+            @BodyRowTemplate(item)
+        }
+    </tbody>
+</table>
